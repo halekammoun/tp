@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mini Bibliothèque</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:850px;margin:2rem auto;padding:0 1rem;background:#f3f6fa;color:#182230}
+h1{color:#1d4e89}section{background:#fff;padding:1rem;margin:1rem 0;border-radius:10px;box-shadow:0 1px 5px #0001}
+input,button{padding:.55rem;margin:.25rem}button{cursor:pointer;background:#1d4e89;color:white;border:0;border-radius:5px}pre{white-space:pre-wrap;overflow-wrap:anywhere}
+</style></head>
+<body>
+<h1>📚 Mini Bibliothèque</h1>
+<p>Une application simple basée sur trois microservices.</p>
+<section><h2>Catalogue des livres</h2><button onclick="get('/api/books','booksResult')">Afficher les livres</button><pre id="booksResult"></pre></section>
+<section><h2>Membres</h2><input id="memberName" placeholder="Nom du membre"><button onclick="post('/api/members',{name:val('memberName')},'membersResult')">Ajouter un membre</button><button onclick="get('/api/members','membersResult')">Afficher les membres</button><pre id="membersResult"></pre></section>
+<section><h2>Emprunts</h2><input id="loanMember" type="number" min="1" placeholder="ID membre"><input id="loanBook" type="number" min="1" placeholder="ID livre"><button onclick="post('/api/loans/create',{member_id:Number(val('loanMember')),book_id:Number(val('loanBook'))},'loansResult')">Enregistrer l'emprunt</button><button onclick="get('/api/loans','loansResult')">Afficher les emprunts</button><pre id="loansResult"></pre></section>
+<script>
+function val(id){return document.getElementById(id).value}
+async function get(url,id){try{const r=await fetch(url);document.getElementById(id).textContent='HTTP '+r.status+'\n'+await r.text()}catch(e){document.getElementById(id).textContent=String(e)}}
+async function post(url,data,id){try{const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});document.getElementById(id).textContent='HTTP '+r.status+'\n'+await r.text()}catch(e){document.getElementById(id).textContent=String(e)}}
+</script></body></html>
